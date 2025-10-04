@@ -1,0 +1,9 @@
+ # Ignorar carpetas de editores de código
+    .vscode/
+    .idea/
+
+    # Ignorar dependencias de Composer (si las usaras en el futuro)
+    /vendor/
+
+    # Ignorar archivos de configuración local (si los tuvieras)
+    .env

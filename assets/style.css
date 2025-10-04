@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+    /* Paleta de Colores: Azul, Dorado y Rojo */
+    --primary-color: #295282; /* Un azul corporativo y serio */
+    --secondary-color: #c59d5f; /* Un dorado elegante, no brillante */
+    --danger-color: #a83232; /* Un rojo oscuro para acciones destructivas */
+    --sidebar-bg: #1d3557; /* Un azul marino muy oscuro para la barra lateral */
+    --background-color: #f8f9fa; /* Un fondo casi blanco para que el contenido respire */
+    --card-bg: #ffffff;
+    --text-color: #343a40;
+    --light-text-color: #e9ecef;
+    --card-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+    --border-radius: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Barra Lateral (Sidebar) Rediseñada --- */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: var(--light-text-color);
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .sidebar-header {
+    padding: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.sidebar .sidebar-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li a {
+    color: var(--light-text-color);
+    text-decoration: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 15px 25px; /* Aumentamos el padding para más espacio interior */
+    border-radius: 8px;
+    margin-bottom: 12px; /* Aumentamos el margen para separar más los botones */
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar ul li a.active {
+    background-color: var(--secondary-color); /* Dorado para el enlace activo */
+    color: #fff;
+    font-weight: 700;
+}
+
+/* --- Contenido Principal --- */
+.content {
+    padding: 30px 40px;
+    flex-grow: 1; /* Esta es la clave: hace que el contenido ocupe todo el espacio vertical disponible */
+}
+
+/* --- Estilos para Formularios (con etiquetas) --- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #555;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    align-items: end; /* Alinea los elementos al final para que el botón se vea bien */
+}
+
+form button {
+    background-color: var(--primary-color);
+    grid-column: 1 / -1; /* Botón ocupa todo el ancho */
+}
+
+/* --- Estilo para el botón de Eliminar --- */
+table a.delete-btn {
+    color: white;
+    background-color: var(--danger-color);
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+table a.delete-btn:hover {
+    background-color: #8c2a2a;
+}
+.main-wrapper {
+    margin-left: 260px; /* Mueve todo el bloque a la derecha del sidebar */
+    width: calc(100% - 260px);
+    display: flex;
+    flex-direction: column; /* Apila el contenido y el footer verticalmente */
+    min-height: 100vh;
+}
+
+/* --- Pie de Página (Footer) Corregido --- */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 14px;
+    background-color: var(--background-color);
+    border-top: 1px solid #dee2e6;
+    flex-shrink: 0; /* Evita que el footer se encoja */
+}
+
+/* --- (Resto de tu código CSS - sin cambios en estas clases) --- */
+.header, .card, .stats-container, .stat-box, table, th, td, form input, form select, form button {
+    /* Estas clases ya estaban bien, las mantengo con las nuevas variables de color */
+    /* ... (tu código original para estas clases) ... */
+}
+.header { margin-bottom: 30px; }
+.header h1 { font-size: 28px; font-weight: 700; color: var(--sidebar-bg); }
+.card { background-color: var(--card-bg); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--card-shadow); margin-bottom: 30px; }
+.card h2 { font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; font-weight: 500; }
+.stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
+.stat-box { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 25px; border-radius: var(--border-radius); text-align: center; }
+.stat-box h3 { font-size: 16px; font-weight: 500; margin-bottom: 10px; }
+.stat-box p { font-size: 32px; font-weight: 700; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+thead th { background-color: #f8f9fa; font-weight: 600; font-size: 14px; color: #555; }
+tbody tr:hover { background-color: #f8f9fa; }
+form input, form select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: 'Roboto', sans-serif; width: 100%; }
+form button { color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; transition: background-color 0.3s ease; }
+form button:hover { opacity: 0.9; }
