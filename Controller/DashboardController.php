@@ -8,7 +8,21 @@ class DashboardController {
     private $citaModel;
     private $horarioModel;
 
-    public function __construct() {
+   public function __construct() {
+        // =================== BLOQUE DE SEGURIDAD ===================
+        // Si el usuario no ha iniciado sesión, se le redirige al login.
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . BASE_URL . '/index.php?controller=Login');
+            exit();
+        }
+        // Si el usuario no es un Administrador (rol 3), se le niega el acceso.
+        if ($_SESSION['user_role'] != 3) {
+            header('Location: ' . BASE_URL . '/index.php?controller=Login&error=access_denied');
+            exit();
+        }
+        // =========================================================
+
+        // El resto del constructor original
         $this->usuarioModel = new UsuarioModel();
         $this->citaModel = new CitaModel();
         $this->horarioModel = new HorarioModel();

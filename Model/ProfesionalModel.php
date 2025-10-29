@@ -21,6 +21,12 @@ class ProfesionalModel extends Database {
             return false;
         }
     }
+     public function findProfesionalByUserId($idUsuario) {
+        $stmt = $this->pdo->prepare("SELECT IdProfesional FROM Profesional WHERE IdUsuario = ?");
+        $stmt->execute([$idUsuario]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['IdProfesional'] : false;
+    }
 
     // --- Aquí podrías añadir más funciones en el futuro ---
     

@@ -67,5 +67,14 @@ class UsuarioModel extends Database {
     public function getLastInsertId() {
         return $this->pdo->lastInsertId();
     }
+    public function findByEmailForAuth($email) {
+        $stmt = $this->pdo->prepare("
+            SELECT idUsuario, Password, IdRol, Nombres 
+            FROM Usuario 
+            WHERE CorreoInstitucional = ? AND Estado = 'ACTIVO'
+        ");
+        $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

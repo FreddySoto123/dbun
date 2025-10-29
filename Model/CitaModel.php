@@ -57,5 +57,17 @@ class CitaModel extends Database {
     public function count() {
         return $this->pdo->query("SELECT COUNT(*) FROM Cita")->fetchColumn();
     }
+     public function getAppointmentsForProfessionalByDate($idProfesional, $fecha) {
+        $stmt = $this->pdo->prepare("
+            SELECT c.HoraCita, c.TipoConsulta, c.Estado,
+                   u.Nombres as estudiante_nombre, u.ApellidoPaterno as estudiante_apellido
+            FROM Cita c
+            JOIN Usuario u ON c.IdUsuario = u.idUsuario
+            WHERE c.IdProfesional = ? AND c.FechaCita = ?
+            ORDER BY c.HoraCita ASC
+        ");
+        $stmt->execute([$idProfesional, $fecha]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

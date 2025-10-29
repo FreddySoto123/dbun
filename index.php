@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Controlador Frontal - Único punto de entrada
 
 // ------------------- CAMBIO CLAVE -------------------
