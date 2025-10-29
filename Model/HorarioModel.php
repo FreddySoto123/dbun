@@ -2,24 +2,43 @@
 require_once BASE_PATH . '/Model/Database.php';
 
 class HorarioModel extends Database {
+
+    // La consulta ahora une DiasAtencion, Profesional y Usuario.
     public function getAll() {
-        $stmt = $this->pdo->prepare("SELECT * FROM configuracion_horarios ORDER BY fecha_inicio DESC");
+        $stmt = $this->pdo->prepare("
+            SELECT 
+                da.*, 
+                u.Nombres as profesional_nombre, 
+                u.ApellidoPaterno as profesional_apellido,
+                p.HorarioInicio,
+                p.HorarioFin
+            FROM DiasAtencion da
+            JOIN Profesional p ON da.IdProfesional = p.IdProfesional
+            JOIN Usuario u ON p.IdUsuario = u.IdUsuario
+            ORDER BY da.IdProfesional, da.DiaSemana
+        ");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create($medico_id, $fecha_inicio, $fecha_fin, $estado) {
-        $stmt = $this->pdo->prepare("INSERT INTO configuracion_horarios (medico_id, fecha_inicio, fecha_fin, estado) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$medico_id, $fecha_inicio, $fecha_fin, $estado]);
+    // La creación ahora es sobre la tabla DiasAtencion.
+    public function create($idProfesional, $diaSemana, $activo) {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO DiasAtencion (IdProfesional, DiaSemana, Activo) 
+            VALUES (?, ?, ?)
+        ");
+        return $stmt->execute([$idProfesional, $diaSemana, $activo]);
     }
     
+    // El ID corresponde a la tabla DiasAtencion.
     public function delete($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM configuracion_horarios WHERE id_horario = ?");
+        $stmt = $this->pdo->prepare("DELETE FROM DiasAtencion WHERE IdDiasAtencion = ?");
         return $stmt->execute([$id]);
     }
     
+    // Contaremos los profesionales que tienen días de atención definidos.
     public function count() {
-        return $this->pdo->query("SELECT COUNT(*) FROM configuracion_horarios")->fetchColumn();
+        return $this->pdo->query("SELECT COUNT(DISTINCT IdProfesional) FROM DiasAtencion")->fetchColumn();
     }
 }
 ?>

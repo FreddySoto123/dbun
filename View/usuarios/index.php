@@ -12,28 +12,33 @@
         <div class="alert alert-success"><?php echo htmlspecialchars(urldecode($success_message)); ?></div>
     <?php endif; ?>
 
-    <!-- ===================================== -->
-    <!-- ESTE ES EL FORMULARIO QUE FALTABA -->
-    <!-- ===================================== -->
     <form action="index.php?controller=Usuario&action=crear" method="POST">
         <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan" required>
+            <label for="nombres">Nombres</label>
+            <input type="text" id="nombres" name="nombres" placeholder="Ej: Juan Freddy" required>
         </div>
         <div class="form-group">
-            <label for="apellido">Apellido</label>
-            <input type="text" id="apellido" name="apellido" placeholder="Ej: Pérez" required>
+            <label for="apellidoPaterno">Apellido Paterno</label>
+            <input type="text" id="apellidoPaterno" name="apellidoPaterno" placeholder="Ej: Soto" required>
         </div>
         <div class="form-group">
-            <label for="correo">Correo Electrónico</label>
-            <input type="email" id="correo" name="correo" placeholder="Ej: usuario@correo.com" required>
+            <label for="apellidoMaterno">Apellido Materno</label>
+            <input type="text" id="apellidoMaterno" name="apellidoMaterno" placeholder="Ej: Garrita">
         </div>
         <div class="form-group">
-            <label for="rol_id">Rol de Usuario</label>
-            <select id="rol_id" name="rol_id" required>
+            <label for="correo">Correo Institucional</label>
+            <input type="email" id="correo" name="correo" placeholder="Ej: juan.soto@institucion.com" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required>
+        </div>
+        <div class="form-group">
+            <label for="idRol">Rol de Usuario</label>
+            <select id="idRol" name="idRol" required>
                 <option value="" disabled selected>Seleccionar un rol...</option>
-                <option value="1">Estudiante</option>
-                <option value="2">Personal de Salud</option>
+                <option value="1">Estudiante</option> 
+                <option value="2">Profesional</option>
                 <option value="3">Administrador</option>
             </select>
         </div>
@@ -43,32 +48,47 @@
 
 <div class="card">
     <h2>Lista de Usuarios</h2>
-    
-    <!-- ===================================== -->
-    <!-- ESTA ES LA TABLA QUE FALTABA -->
-    <!-- ===================================== -->
-    <table>
+     <table>
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Correo</th>
+                <th>Nombre Completo</th>
+                <th>Correo Institucional</th>
                 <th>Rol</th>
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
-            <?php foreach ($usuarios as $usuario): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
-                <td><?php echo htmlspecialchars($usuario['apellido']); ?></td>
-                <td><?php echo htmlspecialchars($usuario['correo']); ?></td>
-                <td><?php echo $usuario['rol_id'] == 1 ? 'Estudiante' : ($usuario['rol_id'] == 2 ? 'Personal de Salud' : 'Administrador'); ?></td>
-                <td>
-                    <a href="index.php?controller=Usuario&action=eliminar&id=<?php echo $usuario['id_usuario']; ?>" class="delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar a este usuario?');">Eliminar</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
+   <tbody>
+    <?php foreach ($usuarios as $usuario): ?>
+    <tr>
+        <td>
+            <?php 
+            $nombres = $usuario['Nombres'] ?? '';
+            $paterno = $usuario['ApellidoPaterno'] ?? '';
+            $materno = $usuario['ApellidoMaterno'] ?? '';
+            echo htmlspecialchars(trim($nombres . ' ' . $paterno . ' ' . $materno)); 
+            ?>
+        </td>
+        <td>
+            <?php echo htmlspecialchars($usuario['CorreoInstitucional'] ?? ''); ?>
+        </td>
+        <td>
+            <?php echo htmlspecialchars($usuario['rol_nombre'] ?? ''); ?>
+        </td>
+        <td>
+            <?php
+            if (isset($usuario['idUsuario']) && !empty($usuario['idUsuario'])) {
+            ?>
+                <a href="index.php?controller=Usuario&action=eliminar&id=<?php echo $usuario['idUsuario']; ?>" class="delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar a este usuario?');">
+                    Eliminar
+                </a>
+            <?php
+            } else {
+                echo 'ID de usuario no encontrado'; 
+            }
+            ?>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</tbody>
     </table>
 </div>

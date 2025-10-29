@@ -7,14 +7,21 @@
 <div class="card">
     <h2>Últimas Citas Reservadas</h2>
     <table>
-        <thead><tr><th>Fecha y Hora</th><th>Estudiante</th><th>Consulta</th><th>Estado</th></tr></thead>
+        <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Estudiante</th>
+                <th>Tipo de Consulta</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
         <tbody>
             <?php foreach ($ultimasCitas as $cita): ?>
             <tr>
-                <td><?php echo htmlspecialchars($cita['fecha_hora']); ?></td>
-                <td><?php echo htmlspecialchars($cita['nombre'] . ' ' . $cita['apellido']); ?></td>
-                <td><?php echo htmlspecialchars($cita['tipo_consulta']); ?></td>
-                <td><?php echo htmlspecialchars($cita['estado']); ?></td>
+                <td><?php echo htmlspecialchars($cita['FechaCita'] . ' ' . $cita['HoraCita']); ?></td>
+                <td><?php echo htmlspecialchars($cita['Nombres'] . ' ' . $cita['ApellidoPaterno']); ?></td>
+                <td><?php echo htmlspecialchars($cita['TipoConsulta']); ?></td>
+                <td><?php echo htmlspecialchars($cita['Estado']); ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

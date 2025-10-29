@@ -164,4 +164,13 @@ thead th { background-color: #f8f9fa; font-weight: 600; font-size: 14px; color: 
 tbody tr:hover { background-color: #f8f9fa; }
 form input, form select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: 'Roboto', sans-serif; width: 100%; }
 form button { color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; transition: background-color 0.3s ease; }
-form button:hover { opacity: 0.9; }
+form button:hover { opacity: 0.9; }.status {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: 500;
+    font-size: 12px;
+    display: inline-block;
+}
+.status-confirmada { background-color: #d1e7dd; color: #0f5132; }
+.status-atendida { background-color: #cfe2ff; color: #084298; }
+.status-cancelada { background-color: #f8d7da; color: #842029; }
