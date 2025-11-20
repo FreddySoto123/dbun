@@ -51,8 +51,7 @@
                 elseif ($_SESSION['user_role'] == 2):
             ?>
                 <li><a href="<?php echo BASE_URL; ?>/index.php?controller=Professional&action=index" class="<?php echo ($activePage == 'dashboard_profesional') ? 'active' : ''; ?>"><i class="fas fa-calendar-day"></i><span>Agenda del Día</span></a></li>
-                <li><a href="#"><i class="fas fa-calendar-alt"></i><span>Próximas Citas</span></a></li>
-                <li><a href="#"><i class="fas fa-user-cog"></i><span>Mi Perfil</span></a></li>
+<li><a href="<?php echo BASE_URL; ?>/index.php?controller=Professional&action=appointments" class="<?php echo ($activePage == 'mis_citas') ? 'active' : ''; ?>"><i class="fas fa-calendar-alt"></i><span>Mis Citas</span></a></li>                <li><a href="<?php echo BASE_URL; ?>/index.php?controller=Professional&action=profile" class="<?php echo ($activePage == 'profile') ? 'active' : ''; ?>"><i class="fas fa-user-cog"></i><span>Mi Perfil</span></a></li>
             
             <?php
                 // --- Aquí podrías añadir el menú para el Estudiante con 'elseif ($_SESSION['user_role'] == 1):' ---

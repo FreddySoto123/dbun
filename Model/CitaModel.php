@@ -69,5 +69,51 @@ class CitaModel extends Database {
         $stmt->execute([$idProfesional, $fecha]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+ 
+
+public function getCitasPorTipo() {
+    $stmt = $this->pdo->prepare("
+        SELECT TipoConsulta, COUNT(*) as cantidad
+        FROM Cita
+        GROUP BY TipoConsulta
+    ");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public function getPromedioCitasPorEstudiante() {
+    $stmt = $this->pdo->prepare("
+        SELECT AVG(citas_por_estudiante) as promedio
+        FROM (SELECT COUNT(*) as citas_por_estudiante FROM Cita GROUP BY IdUsuario) as subconsulta
+    ");
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+ public function getUpcomingAppointmentsForProfessional($idProfesional) {
+        $stmt = $this->pdo->prepare("
+            SELECT c.FechaCita, c.HoraCita, c.TipoConsulta, c.Estado,
+                   u.Nombres as estudiante_nombre, u.ApellidoPaterno as estudiante_apellido
+            FROM Cita c
+            JOIN Usuario u ON c.IdUsuario = u.idUsuario
+            WHERE c.IdProfesional = ? AND c.FechaCita >= CURDATE()
+            ORDER BY c.FechaCita ASC, c.HoraCita ASC
+        ");
+        $stmt->execute([$idProfesional]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPastAppointmentsForProfessional($idProfesional) {
+        $stmt = $this->pdo->prepare("
+            SELECT c.FechaCita, c.HoraCita, c.TipoConsulta, c.Estado,
+                   u.Nombres as estudiante_nombre, u.ApellidoPaterno as estudiante_apellido
+            FROM Cita c
+            JOIN Usuario u ON c.IdUsuario = u.idUsuario
+            WHERE c.IdProfesional = ? AND c.FechaCita < CURDATE()
+            ORDER BY c.FechaCita DESC, c.HoraCita DESC
+        ");
+        $stmt->execute([$idProfesional]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

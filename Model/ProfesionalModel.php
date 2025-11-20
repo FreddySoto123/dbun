@@ -27,6 +27,52 @@ class ProfesionalModel extends Database {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['IdProfesional'] : false;
     }
+       public function getProfessionalDetailsByUserId($idUsuario) {
+        $stmt = $this->pdo->prepare("
+            SELECT u.*, p.Especialidad, p.HorarioInicio, p.HorarioFin
+            FROM Profesional p
+            JOIN Usuario u ON p.IdUsuario = u.idUsuario
+            WHERE p.IdUsuario = ?
+        ");
+        $stmt->execute([$idUsuario]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+     public function updateProfessionalDetails($idUsuario, $data) {
+        // Iniciar transacción para asegurar que ambas actualizaciones se completen
+        $this->pdo->beginTransaction();
+        try {
+            // 1. Actualizar la tabla Usuario
+            $stmtUser = $this->pdo->prepare(
+                "UPDATE Usuario SET Nombres = ?, ApellidoPaterno = ?, ApellidoMaterno = ? WHERE idUsuario = ?"
+            );
+            $stmtUser->execute([
+                $data['nombres'],
+                $data['apellidoPaterno'],
+                $data['apellidoMaterno'],
+                $idUsuario
+            ]);
+
+            // 2. Actualizar la tabla Profesional
+            $stmtProf = $this->pdo->prepare(
+                "UPDATE Profesional SET Especialidad = ?, HorarioInicio = ?, HorarioFin = ? WHERE IdUsuario = ?"
+            );
+            $stmtProf->execute([
+                $data['especialidad'],
+                $data['horarioInicio'],
+                $data['horarioFin'],
+                $idUsuario
+            ]);
+
+            // Si todo fue bien, confirmar los cambios
+            $this->pdo->commit();
+            return true;
+        } catch (PDOException $e) {
+            // Si algo falla, revertir todos los cambios
+            $this->pdo->rollBack();
+            // Opcional: registrar el error $e->getMessage()
+            return false;
+        }
+    }
 
     // --- Aquí podrías añadir más funciones en el futuro ---
     

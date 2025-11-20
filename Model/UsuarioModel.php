@@ -76,5 +76,15 @@ class UsuarioModel extends Database {
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function getUsuariosPorTipo() {
+    $stmt = $this->pdo->prepare("
+        SELECT r.Nombre as rol_nombre, COUNT(*) as cantidad
+        FROM Usuario u
+        JOIN Rol r ON u.IdRol = r.idRol
+        GROUP BY r.Nombre
+    ");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 ?>
