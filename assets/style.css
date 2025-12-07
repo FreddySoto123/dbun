@@ -30,20 +30,22 @@ body {
 
 /* --- Barra Lateral (Sidebar) Rediseñada --- */
 .sidebar {
-    width: 260px;
-    background-color: var(--sidebar-bg);
-    color: var(--light-text-color);
-    padding: 20px;
-    position: fixed;
-    height: 100%;
+    width: 250px;
+    background-color: #1a202c; /* Un azul marino más oscuro y moderno */
+    color: #a0aec0; /* Texto gris claro para mejor contraste */
     display: flex;
     flex-direction: column;
+    position: fixed;
+    height: 100%;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
-
-.sidebar .sidebar-header {
-    padding: 10px;
-    margin-bottom: 30px;
+.sidebar-header {
+    padding: 24px;
     text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .sidebar .sidebar-header h2 {
@@ -55,31 +57,56 @@ body {
 .sidebar ul {
     list-style: none;
     padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Empuja el "Cerrar Sesión" hacia abajo */
+    padding-top: 10px;
 }
 
+
 .sidebar ul li a {
-    color: var(--light-text-color);
-    text-decoration: none;
-    font-size: 16px;
     display: flex;
     align-items: center;
-    padding: 15px 25px; /* Aumentamos el padding para más espacio interior */
-    border-radius: 8px;
-    margin-bottom: 12px; /* Aumentamos el margen para separar más los botones */
-    font-weight: 500;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 15px 25px;
+    color: #cbd5e1; /* Un gris-azulado claro */
+    text-decoration: none;
+    transition: all 0.3s ease; /* Transición suave para todos los cambios */
+    position: relative;
+    border-left: 4px solid transparent; /* Borde izquierdo transparente por defecto */
+}
+.sidebar ul li a i {
+    margin-right: 15px;
+    font-size: 1rem;
+    width: 20px; /* Ancho fijo para alinear el texto */
+    text-align: center;
 }
 
 .sidebar ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    border-left-color: #4299e1; /* Color del borde al hacer hover */
+    transform: translateX(5px); /* Pequeño desplazamiento a la derecha */
 }
-
 .sidebar ul li a.active {
-    background-color: var(--secondary-color); /* Dorado para el enlace activo */
-    color: #fff;
-    font-weight: 700;
+    background-color: #2b6cb0; /* Fondo azul más intenso para el activo */
+    color: white;
+    font-weight: 600;
+    border-left-color: #63b3ed; /* Borde izquierdo azul brillante */
+}
+.sidebar ul:last-child {
+    flex-grow: 0; /* Asegura que este ul no crezca */
+    margin-bottom: 10px;
+}
+.sidebar ul:last-child li a:hover {
+    background-color: rgba(239, 68, 68, 0.1); /* Fondo rojizo sutil al hacer hover */
+    color: #f56565; /* Texto rojo */
+    border-left-color: #f56565;
 }
 
+/* Ajuste para el contenedor principal para que no quede debajo del sidebar */
+.main-wrapper {
+    margin-left: 250px; /* Mismo ancho que el sidebar */
+    padding: 20px;
+}
 /* --- Contenido Principal --- */
 .content {
     padding: 30px 40px;
@@ -150,6 +177,39 @@ footer {
     /* Estas clases ya estaban bien, las mantengo con las nuevas variables de color */
     /* ... (tu código original para estas clases) ... */
 }
+.edit-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 5px; /* Espacio entre los botones */
+    background-color: #337ab7; /* Un color azul para "Editar" */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: normal; /* O 'bold' si lo prefieres */
+    transition: background-color 0.2s ease;
+}
+
+.edit-btn:hover {
+    background-color: #286090; /* Un azul más oscuro al pasar el ratón */
+    color: white;
+}
+
+/* Ajuste opcional para asegurar que el botón Eliminar tenga el mismo tamaño */
+.delete-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #d9534f; /* Tu color rojo actual */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: normal; /* O 'bold' si lo prefieres */
+    transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c; /* Un rojo más oscuro */
+    color: white;
+}
 .header { margin-bottom: 30px; }
 .header h1 { font-size: 28px; font-weight: 700; color: var(--sidebar-bg); }
 .card { background-color: var(--card-bg); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--card-shadow); margin-bottom: 30px; }
@@ -174,3 +234,148 @@ form button:hover { opacity: 0.9; }.status {
 .status-confirmada { background-color: #d1e7dd; color: #0f5132; }
 .status-atendida { background-color: #cfe2ff; color: #084298; }
 .status-cancelada { background-color: #f8d7da; color: #842029; }
+.modal-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para cubrir toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100vw; /* 100% del ancho de la ventana */
+    height: 100vh; /* 100% de la altura de la ventana */
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semitransparente */
+    z-index: 1000; /* Asegura que esté por encima de todo */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    opacity: 0; /* Empieza transparente para la animación */
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    display: flex; /* Lo mostramos */
+    opacity: 1; /* Hacemos que sea visible */
+}
+
+.modal-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 500px;
+    transform: scale(0.95); /* Empieza ligeramente más pequeño para la animación */
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-container {
+    transform: scale(1); /* Vuelve a su tamaño normal al mostrarse */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333; /* Color de texto más oscuro */
+}
+
+.modal-close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+.modal-content {
+    max-height: 60vh; /* Altura máxima del contenido (60% de la altura de la ventana) */
+    overflow-y: auto; /* Muestra una barra de scroll vertical SÓLO si el contenido se desborda */
+    padding-right: 15px; /* Pequeño espacio para que el scroll no se pegue al contenido */
+    margin-right: -15px; /* Compensa el padding para mantener el alineamiento */
+}
+.modal-close-btn:hover {
+    color: #333;
+}
+/* Estilos para el formulario dentro del modal */
+.modal-content .form-group {
+    margin-bottom: 15px;
+}
+.modal-content .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+.modal-content .form-group input,
+.modal-content .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.modal-content button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #337ab7; /* Azul, como el botón de editar */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.modal-content button[type="submit"]:hover {
+    background-color: #286090;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- 2. Aplicar la Animación a los Elementos del Dashboard --- */
+/* Le decimos a los elementos que empiecen invisibles y que usen la animación */
+.stat-box,
+.chart-box,
+.card {
+    opacity: 0; /* Empiezan invisibles */
+    animation: fadeInUp 0.5s ease-out forwards; /* Aplica la animación */
+}
+
+/* --- 3. Efecto "Lift" (elevación) al pasar el ratón --- */
+.stat-box,
+.chart-box {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+.stat-box:hover,
+.chart-box:hover {
+    transform: translateY(-5px); /* Se mueve 5px hacia arriba */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+}
+
+
+/* --- 4. Aplicar un retraso escalonado a la animación para un efecto más dinámico --- */
+/* Cada tipo de caja aparecerá un poco después de la anterior */
+
+/* Cajas de estadísticas */
+.stat-box:nth-child(1) { animation-delay: 0.1s; }
+.stat-box:nth-child(2) { animation-delay: 0.2s; }
+.stat-box:nth-child(3) { animation-delay: 0.3s; }
+
+/* Cajas de gráficos */
+.charts-container .chart-box:nth-child(1) { animation-delay: 0.4s; }
+.charts-container .chart-box:nth-child(2) { animation-delay: 0.5s; }
+
+/* Gráfico de barras y tabla final */
+.full-width-chart-container .chart-box { animation-delay: 0.6s; }
+.card { animation-delay: 0.7s; }

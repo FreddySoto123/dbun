@@ -77,6 +77,11 @@
                     </span>
                 </td>
                 <td>
+                   <button class="edit-btn modal-trigger-btn" 
+                            data-id="<?php echo $horario['idDiasAtencion']; ?>" 
+                            data-type="horario">
+                        Editar
+                    </button>
                     <a href="index.php?controller=Horario&action=eliminar&id=<?php echo $horario['idDiasAtencion']; ?>" class="delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar este día de atención?');">Eliminar</a>
                 </td>
             </tr>

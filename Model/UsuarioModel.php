@@ -86,5 +86,39 @@ class UsuarioModel extends Database {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+  // ===== NUEVO MÉTODO PARA ENCONTRAR UN USUARIO POR SU ID =====
+    public function findById($id) {
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM Usuario WHERE idUsuario = ?
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function update($id, $nombres, $apellidoPaterno, $apellidoMaterno, $correo, $idRol, $password = null) {
+        if ($password) {
+            $sql = "UPDATE Usuario SET 
+                        Nombres = ?, 
+                        ApellidoPaterno = ?, 
+                        ApellidoMaterno = ?, 
+                        CorreoInstitucional = ?, 
+                        IdRol = ?, 
+                        Password = ? 
+                    WHERE idUsuario = ?";
+            $params = [$nombres, $apellidoPaterno, $apellidoMaterno, $correo, $idRol, $password, $id];
+        } else {
+            $sql = "UPDATE Usuario SET 
+                        Nombres = ?, 
+                        ApellidoPaterno = ?, 
+                        ApellidoMaterno = ?, 
+                        CorreoInstitucional = ?, 
+                        IdRol = ? 
+                    WHERE idUsuario = ?";
+            $params = [$nombres, $apellidoPaterno, $apellidoMaterno, $correo, $idRol, $id];
+        }
+        
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
+    }
 }
 ?>

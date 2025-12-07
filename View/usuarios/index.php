@@ -78,6 +78,11 @@
             <?php
             if (isset($usuario['idUsuario']) && !empty($usuario['idUsuario'])) {
             ?>
+            <button class="edit-btn modal-trigger-btn" 
+                        data-id="<?php echo $usuario['idUsuario']; ?>" 
+                        data-type="usuario">
+                    Editar
+                </button>
                 <a href="index.php?controller=Usuario&action=eliminar&id=<?php echo $usuario['idUsuario']; ?>" class="delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar a este usuario?');">
                     Eliminar
                 </a>

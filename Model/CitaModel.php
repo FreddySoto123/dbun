@@ -115,5 +115,40 @@ public function getPromedioCitasPorEstudiante() {
         $stmt->execute([$idProfesional]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function findById($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM Cita WHERE IdCita = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // ===== NUEVO MÉTODO PARA ACTUALIZAR UNA CITA =====
+    public function update($idCita, $fechaCita, $horaCita, $tipoConsulta, $estado, $idUsuario, $idProfesional) {
+        $stmt = $this->pdo->prepare("
+            UPDATE Cita SET 
+                FechaCita = ?, 
+                HoraCita = ?, 
+                TipoConsulta = ?, 
+                Estado = ?, 
+                IdUsuario = ?, 
+                IdProfesional = ?
+            WHERE IdCita = ?
+        ");
+        return $stmt->execute([$fechaCita, $horaCita, $tipoConsulta, $estado, $idUsuario, $idProfesional, $idCita]);
+    }
+    public function getCitasUltimos7Dias() {
+        $stmt = $this->pdo->prepare("
+            SELECT 
+                DATE(FechaCita) as fecha, 
+                COUNT(*) as cantidad
+            FROM Cita
+            WHERE FechaCita >= CURDATE() - INTERVAL 6 DAY
+            GROUP BY DATE(FechaCita)
+            ORDER BY fecha ASC
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 ?>

@@ -62,5 +62,65 @@ class HorarioController {
             exit();
         }
     }
+
+    public function editar() {
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $horario = $this->horarioModel->findById($id);
+
+            if ($horario) {
+                // Necesitamos la lista de profesionales para el menú desplegable
+                $profesionales = $this->usuarioModel->getProfesionales();
+                
+                $pageTitle = "Editar Día de Atención";
+                $activePage = "horarios";
+                
+                require BASE_PATH . '/View/templates/header.php';
+                // Llamamos a la nueva vista de edición que crearemos
+                require BASE_PATH . '/View/horarios/editar.php';
+                require BASE_PATH . '/View/templates/footer.php';
+            } else {
+                header("Location: index.php?controller=Horario&action=index&error=" . urlencode("Registro de horario no encontrado."));
+                exit();
+            }
+        }
+    }
+
+    // ===== NUEVA ACCIÓN PARA PROCESAR LA ACTUALIZACIÓN DE HORARIOS =====
+    public function actualizar() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->horarioModel->update(
+                $_POST['idDiasAtencion'],
+                $_POST['idProfesional'],
+                $_POST['diaSemana'],
+                $_POST['activo']
+            );
+            
+            $success = urlencode("Día de atención actualizado correctamente.");
+            header("Location: index.php?controller=Horario&action=index&success=$success");
+            exit();
+        }
+    }
+      public function getHorarioJson() {
+        if (isset($_GET['id'])) {
+            $horario = $this->horarioModel->findById($_GET['id']);
+            if ($horario) {
+                // También necesitamos la lista de profesionales para el menú desplegable
+                $profesionales = $this->usuarioModel->getProfesionales();
+
+                $response = [
+                    'horario' => $horario,
+                    'profesionales' => $profesionales
+                ];
+
+                header('Content-Type: application/json');
+                echo json_encode($response);
+                exit();
+            }
+        }
+        // Si no hay ID o el registro no se encuentra, devuelve un error
+        header("HTTP/1.0 404 Not Found");
+        exit();
+    }
 }
 ?>

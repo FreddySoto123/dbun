@@ -66,5 +66,84 @@ class CitaController {
             exit();
         }
     }
+     public function editar() {
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $cita = $this->citaModel->findById($id);
+
+            if ($cita) {
+                // También necesitamos las listas de estudiantes y profesionales para los menús desplegables
+                $estudiantes = $this->usuarioModel->getEstudiantes();
+                $profesionales = $this->usuarioModel->getProfesionales();
+                
+                $pageTitle = "Editar Cita";
+                $activePage = "citas";
+                
+                require BASE_PATH . '/View/templates/header.php';
+                // Llamamos a la nueva vista de edición que crearemos
+                require BASE_PATH . '/View/citas/editar.php';
+                require BASE_PATH . '/View/templates/footer.php';
+            } else {
+                header("Location: index.php?controller=Cita&action=index&error=" . urlencode("Cita no encontrada."));
+                exit();
+            }
+        }
+    }
+
+    // ===== NUEVA ACCIÓN PARA PROCESAR LA ACTUALIZACIÓN DE CITAS =====
+    public function actualizar() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->citaModel->update(
+                $_POST['idCita'],
+                $_POST['fechaCita'],
+                $_POST['horaCita'],
+                $_POST['tipoConsulta'],
+                $_POST['estado'],
+                $_POST['idUsuario'],
+                $_POST['idProfesional']
+            );
+            
+            $success = urlencode("Cita actualizada correctamente.");
+            header("Location: index.php?controller=Cita&action=index&success=$success");
+            exit();
+        }
+    }
+    public function apiGetAllCitas() {
+        // Obtenemos los datos usando la función del modelo que ya existe
+        $citas = $this->citaModel->getAll();
+
+        // Le decimos al cliente (la app Flutter) que le estamos enviando JSON
+        header('Content-Type: application/json; charset=utf-8');
+        
+        // Convertimos el array de PHP a formato JSON y lo imprimimos
+        echo json_encode($citas);
+        
+        // Detenemos la ejecución para no enviar nada más
+        exit();
+    }
+    public function getCitaJson() {
+        if (isset($_GET['id'])) {
+            $cita = $this->citaModel->findById($_GET['id']);
+            if ($cita) {
+                // Para el modal, también necesitamos pasar las listas de estudiantes y profesionales
+                $estudiantes = $this->usuarioModel->getEstudiantes();
+                $profesionales = $this->usuarioModel->getProfesionales();
+
+                $response = [
+                    'cita' => $cita,
+                    'estudiantes' => $estudiantes,
+                    'profesionales' => $profesionales
+                ];
+
+                header('Content-Type: application/json');
+                echo json_encode($response);
+                exit();
+            }
+        }
+        // Si no hay ID o la cita no se encuentra, devuelve un error
+        header("HTTP/1.0 404 Not Found");
+        exit();
+    }
+
 }
 ?>

@@ -6,6 +6,7 @@
     <title><?php echo htmlspecialchars($pageTitle ?? 'Dashboard'); ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/style.css">
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .alert { padding: 15px; margin-bottom: 20px; border-radius: 8px; font-weight: 500; text-align: center; }
         .alert-danger { background-color: #f8d7da; color: #a83232; border: 1px solid #f5c6cb; }

@@ -40,5 +40,24 @@ class HorarioModel extends Database {
     public function count() {
         return $this->pdo->query("SELECT COUNT(DISTINCT IdProfesional) FROM DiasAtencion")->fetchColumn();
     }
+
+    public function findById($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM DiasAtencion WHERE idDiasAtencion = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // ===== NUEVO MÉTODO PARA ACTUALIZAR UN DÍA DE ATENCIÓN =====
+    public function update($id, $idProfesional, $diaSemana, $activo) {
+        $stmt = $this->pdo->prepare("
+            UPDATE DiasAtencion SET 
+                IdProfesional = ?, 
+                DiaSemana = ?, 
+                Activo = ? 
+            WHERE idDiasAtencion = ?
+        ");
+        return $stmt->execute([$idProfesional, $diaSemana, $activo, $id]);
+    }
+
 }
 ?>

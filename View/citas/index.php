@@ -127,11 +127,15 @@
         </td>
         <td>
             <?php if (isset($cita['idCita'])): ?>
-                <a href="index.php?controller=Cita&action=eliminar&id=<?php echo $cita['idCita']; ?>" class="delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
-                    Eliminar
-                </a>
+               <button class="edit-btn modal-trigger-btn" 
+                        data-id="<?php echo $cita['idCita']; ?>" 
+                        data-type="cita">
+                    Editar
+                </button>
+                <a href="index.php?controller=Cita&action=eliminar&id=<?php echo $cita['idCita']; ?>" class="delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">Eliminar</a>
             <?php endif; ?>
         </td>
+
     </tr>
     <?php endforeach; ?>
 </tbody>
